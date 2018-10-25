@@ -1,0 +1,26 @@
+PODS:
+  - Charts (3.2.1):
+    - Charts/Core (= 3.2.1)
+  - Charts/Core (3.2.1)
+  - JSONParserSwift (1.1.4)
+  - OAuthSwift (1.2.2)
+
+DEPENDENCIES:
+  - Charts
+  - JSONParserSwift
+  - OAuthSwift
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Charts
+    - JSONParserSwift
+    - OAuthSwift
+
+SPEC CHECKSUMS:
+  Charts: f122fb70b19847fa5817d018b77d6c5a2296ab25
+  JSONParserSwift: fff6c8aee929431cfbb10d016e9b92f06f732057
+  OAuthSwift: 27b34fe80b76b67cd8f45571e0be2432bc9f6de1
+
+PODFILE CHECKSUM: f56e70311c551837cbcb72fd9bdd79cc9731026d
+
+COCOAPODS: 1.5.3
