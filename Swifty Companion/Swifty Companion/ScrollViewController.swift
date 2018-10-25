@@ -21,29 +21,11 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var barChart: HorizontalBarChartView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var mytableView: UITableView!
     var tempCount : Int = -1
     
     var dataentry : [BarChartDataEntry] = []
     var descriptions : [String] = []
-
-    @IBAction func temp(_ sender: Any) {
-        let queue1 = DispatchQueue(label: "squeue.hoffman.jon")
-        let delayInSeconds1 = 2.0
-        let pTime1 = DispatchTime.now() + Double(Int64(delayInSeconds1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        queue1.asyncAfter(deadline: pTime1) {
-             self.loginLbl.text = String(self.tempCount)
-        }
-       
-        let queue2 = DispatchQueue(label: "squeue.hoffman.jon")
-        let delayInSeconds = 2.0
-        let pTime = DispatchTime.now() + Double(Int64(delayInSeconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        queue2.asyncAfter(deadline: pTime) {
-            self.tableView.dataSource = self
-            self.tableView.reloadData()
-        }
-        
-    }
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -60,9 +42,8 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-//        tableView.dataSource = self
-//        tableView.reloadData()
+        mytableView.delegate = self
+        mytableView.dataSource = self
         barChart.delegate = self
         barChartUpdate()
         
@@ -100,7 +81,7 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
             self.firstNameLbl.text = baseResponse.first_name
             self.lastNameLbl.text = baseResponse.last_name
             self.emailLbl.text = baseResponse.email
-            
+            self.updateData(projects: baseResponse.projects_users!)
             self.barChartUpdate()
             
             URLSession.shared.dataTask(with: URL(string: imageurl!)!, completionHandler: {
@@ -143,4 +124,14 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    func updateData(projects: [ProjectsUsers]){
+        for project in projects{
+            var projectName = (project.project?.slug)!
+            var status = project.status!
+            let grade : Int = Int(project.final_mark ?? 0)
+            print(projectName, status, grade)
+            self.data.append((projectName, status, grade ))
+        }
+        self.mytableView.reloadData()
+    }
 }
