@@ -12,7 +12,7 @@ import Charts
 
 class ScrollViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ChartViewDelegate{
   
-    var data = Data.projects
+    var data : [(String, String, Int)] = []
     var responseText : String = ""
 
     @IBOutlet weak var loginLbl: UILabel!
@@ -22,6 +22,11 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var barChart: HorizontalBarChartView!
     @IBOutlet weak var mytableView: UITableView!
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var scrolContentView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var levelBar: UIProgressView!
+    @IBOutlet weak var progressLbl: UILabel!
     var tempCount : Int = -1
     
     var dataentry : [BarChartDataEntry] = []
@@ -42,64 +47,80 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mytableView.delegate = self
-        mytableView.dataSource = self
-        barChart.delegate = self
-        barChartUpdate()
+//        print("=======>", responseText, "<=======")
+        if self.responseText == "{}"{
+            performSegue(withIdentifier: "unwindToMain", sender: self)
+        }
+        else
+        {
+            self.scrollView.backgroundColor = UIColor(patternImage: UIImage(named: "wtc-bg")!)
+            
+            mytableView.delegate = self
+            mytableView.dataSource = self
+            barChart.delegate = self
+            barChartUpdate()
+            
+            barChart.chartDescription?.enabled = false
+            barChart.drawGridBackgroundEnabled = false
+            
+            let xAxis = barChart.xAxis
+            xAxis.labelFont = .systemFont(ofSize: 9, weight: .light)
+            xAxis.granularityEnabled = true
+            xAxis.labelTextColor = .black
+            xAxis.wordWrapEnabled = true
+            xAxis.labelCount = 17
+            xAxis.drawGridLinesEnabled = false
+            xAxis.labelPosition = .bottom
+            
+            let leftAxis = barChart.leftAxis
+            leftAxis.axisMaximum = 24
+            
+            let righttAxis = barChart.rightAxis
+            righttAxis.axisMaximum = 24
         
-        barChart.chartDescription?.enabled = false
-        barChart.drawGridBackgroundEnabled = false
-        
-        let xAxis = barChart.xAxis
-        xAxis.labelFont = .systemFont(ofSize: 9, weight: .light)
-        xAxis.granularityEnabled = true
-        xAxis.labelTextColor = .black
-        xAxis.wordWrapEnabled = true
-        xAxis.labelCount = 17
-        xAxis.drawGridLinesEnabled = false
-        xAxis.labelPosition = .bottom
-        
-        let leftAxis = barChart.leftAxis
-        leftAxis.axisMaximum = 24
-        
-        let righttAxis = barChart.rightAxis
-        righttAxis.axisMaximum = 24
-    
-        let l = barChart.legend
-        l.enabled = false
+            let l = barChart.legend
+            l.enabled = false
 
-        do {
-            let baseResponse: BaseResponse = try JSONParserSwift.parse(string: responseText)
-            // Use base response object here
-            
-            var imageurl = baseResponse.image_url
-            var index = (imageurl?.lastIndex(of: "/"))!
-            index = (imageurl?.index(after: index))!
-            imageurl?.insert(contentsOf: "medium_", at: index)
-            self.appendChartData(skills: baseResponse.cursus_users![0].skills!)
-            self.loginLbl.text = baseResponse.login
-            self.firstNameLbl.text = baseResponse.first_name
-            self.lastNameLbl.text = baseResponse.last_name
-            self.emailLbl.text = baseResponse.email
-            self.updateData(projects: baseResponse.projects_users!)
-            self.barChartUpdate()
-            
-            URLSession.shared.dataTask(with: URL(string: imageurl!)!, completionHandler: {
-                (data, response, error) in
-                if error != nil{
-                    print(error)
-                }
-                DispatchQueue.main.async {
-                    self.profileImg.image = UIImage(data: data!)
-                }
-            }).resume()
-        } catch {
-            print(error)
+            do {
+                let baseResponse: BaseResponse = try JSONParserSwift.parse(string: responseText)
+                // Use base response object here
+                
+                var imageurl = baseResponse.image_url
+                var index = (imageurl?.lastIndex(of: "/"))!
+                index = (imageurl?.index(after: index))!
+                imageurl?.insert(contentsOf: "medium_", at: index)
+                self.appendChartData(skills: baseResponse.cursus_users![0].skills!)
+                self.loginLbl.text = baseResponse.login
+                self.firstNameLbl.text = baseResponse.first_name
+                self.lastNameLbl.text = baseResponse.last_name
+                self.emailLbl.text = baseResponse.email
+                let levelInt = Int(truncating: baseResponse.cursus_users![0].level!)
+                let level = Float(truncating: baseResponse.cursus_users![0].level!)
+                let progress = level - Float(levelInt)
+                progressLbl.text = "Level " + String(level) + " %"
+                levelBar.progress = progress
+                
+                
+                self.updateData(projects: baseResponse.projects_users!)
+                self.barChartUpdate()
+                
+                URLSession.shared.dataTask(with: URL(string: imageurl!)!, completionHandler: {
+                    (data, response, error) in
+                    if error != nil{
+                        print(error!)
+                    }
+                    DispatchQueue.main.async {
+                        self.profileImg.image = UIImage(data: data!)
+                    }
+                }).resume()
+            } catch {
+                print(error)
+            }
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var vc = segue.destination as! ViewController
+        let vc = segue.destination as! ViewController
         
         vc.responseText = ""
     }
@@ -118,7 +139,7 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
     {
         var i = 0
         for skill in skills {
-            self.dataentry.append(BarChartDataEntry(x: Double(i), y: Double(skill.level!)))
+            self.dataentry.append(BarChartDataEntry(x: Double(i), y: Double(truncating: skill.level!)))
             self.descriptions.append(skill.name!)
             i += 1
         }
@@ -126,10 +147,9 @@ class ScrollViewController: UIViewController, UITableViewDataSource, UITableView
     
     func updateData(projects: [ProjectsUsers]){
         for project in projects{
-            var projectName = (project.project?.slug)!
-            var status = project.status!
-            let grade : Int = Int(project.final_mark ?? 0)
-            print(projectName, status, grade)
+            let projectName = (project.project?.slug)!
+            let status = project.status!
+            let grade : Int = Int(truncating: project.final_mark ?? 0)
             self.data.append((projectName, status, grade ))
         }
         self.mytableView.reloadData()

@@ -18,6 +18,8 @@
 		56E95F35217DDC5400E454CE /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E95F34217DDC5400E454CE /* ScrollViewController.swift */; };
 		56E95F37217DE34A00E454CE /* JsonModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E95F36217DE34A00E454CE /* JsonModels.swift */; };
 		56E95F392180717D00E454CE /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E95F382180717D00E454CE /* ChartViewController.swift */; };
+		56F096A021874E7B00F63164 /* LoadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F0969F21874E7B00F63164 /* LoadViewController.swift */; };
+		56F096A221874FC500F63164 /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56F096A121874FC500F63164 /* Root.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		56E95F34217DDC5400E454CE /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
 		56E95F36217DE34A00E454CE /* JsonModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonModels.swift; sourceTree = "<group>"; };
 		56E95F382180717D00E454CE /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		56F0969F21874E7B00F63164 /* LoadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadViewController.swift; sourceTree = "<group>"; };
+		56F096A121874FC500F63164 /* Root.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
 		6D96D0A9AF5F012501066B4D /* Pods_Swifty_Companion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swifty_Companion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B69EACE03EADBDE95DA50C5E /* Pods-Swifty Companion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swifty Companion.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swifty Companion/Pods-Swifty Companion.release.xcconfig"; sourceTree = "<group>"; };
 		C10F16D4C6CD97122D84EAFF /* Pods-Swifty Companion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swifty Companion.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swifty Companion/Pods-Swifty Companion.debug.xcconfig"; sourceTree = "<group>"; };
@@ -75,9 +79,11 @@
 				56E95F36217DE34A00E454CE /* JsonModels.swift */,
 				56A95CC52181B6C300A34178 /* Data.swift */,
 				564F35872179CFBE0062AC8C /* ViewController.swift */,
+				56F0969F21874E7B00F63164 /* LoadViewController.swift */,
 				56E95F34217DDC5400E454CE /* ScrollViewController.swift */,
 				564F35892179CFBE0062AC8C /* Main.storyboard */,
 				56E95F382180717D00E454CE /* ChartViewController.swift */,
+				56F096A121874FC500F63164 /* Root.storyboard */,
 				56A95CC32181B32F00A34178 /* ProjectTableViewCell.swift */,
 				564F358C2179CFBF0062AC8C /* Assets.xcassets */,
 				564F358E2179CFBF0062AC8C /* LaunchScreen.storyboard */,
@@ -165,6 +171,7 @@
 			files = (
 				564F35902179CFBF0062AC8C /* LaunchScreen.storyboard in Resources */,
 				564F358D2179CFBF0062AC8C /* Assets.xcassets in Resources */,
+				56F096A221874FC500F63164 /* Root.storyboard in Resources */,
 				564F358B2179CFBE0062AC8C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -229,6 +236,7 @@
 			files = (
 				56A95CC62181B6C300A34178 /* Data.swift in Sources */,
 				564F35882179CFBE0062AC8C /* ViewController.swift in Sources */,
+				56F096A021874E7B00F63164 /* LoadViewController.swift in Sources */,
 				56A95CC42181B32F00A34178 /* ProjectTableViewCell.swift in Sources */,
 				56E95F37217DE34A00E454CE /* JsonModels.swift in Sources */,
 				56E95F35217DDC5400E454CE /* ScrollViewController.swift in Sources */,
